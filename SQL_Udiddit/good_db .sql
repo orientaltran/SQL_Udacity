@@ -11,10 +11,8 @@ CREATE TABLE "Users" (
     id                    SERIAL PRIMARY KEY,
     username              VARCHAR(25) NOT NULL,
     created               TIMESTAMP,
-    created_by            VARCHAR(25),
     updated               TIMESTAMP,
     last_login            TIMESTAMP,
-    updated_by            VARCHAR(25),
     CONSTRAINT            "PK_Users" UNIQUE ("username"),
     CONSTRAINT            "Not_Empty_UserName" CHECK (LENGTH(TRIM("username")) > 0)
 );
@@ -26,9 +24,7 @@ CREATE TABLE "Topics" (
     description           VARCHAR(500),
     CONSTRAINT            "PK_Topics" UNIQUE ("name"),
     created               TIMESTAMP,
-    created_by            VARCHAR(25),
     updated               TIMESTAMP,
-    updated_by            VARCHAR(25),
     CONSTRAINT            "Not_Empty_Topic_Name" CHECK (LENGTH(TRIM("name")) > 0)
 );
 
@@ -41,9 +37,7 @@ CREATE TABLE "Posts" (
     topic_id              INTEGER REFERENCES "Topics" ON DELETE CASCADE,
     user_id               INTEGER REFERENCES "Users" ON DELETE SET NULL,
     created               TIMESTAMP,
-    created_by            VARCHAR(25),
     updated               TIMESTAMP,
-    updated_by            VARCHAR(25),
     CONSTRAINT            "Not_Empty_Title" CHECK (LENGTH(TRIM("title")) > 0),
     CONSTRAINT            "URL_or_Text" CHECK (
       (LENGTH(TRIM("url")) > 0 AND LENGTH(TRIM("text_content")) = 0) OR
@@ -61,9 +55,7 @@ CREATE TABLE "Comments" (
     user_id             INTEGER REFERENCES "Users" ON DELETE SET NULL,
     parent_comment_id   INTEGER REFERENCES "Comments" ON DELETE CASCADE,
     created             TIMESTAMP,
-    created_by          VARCHAR(25),
     updated             TIMESTAMP,
-    updated_by          VARCHAR(25),
     CONSTRAINT          "Not_Empty_Text_Content" CHECK(LENGTH(TRIM("text_content")) > 0)
 );
 
@@ -74,9 +66,7 @@ CREATE TABLE "Votes" (
     post_id             INTEGER,
     vote                SMALLINT NOT NULL,
     created             TIMESTAMP,
-    created_by          VARCHAR(25),
     updated             TIMESTAMP,
-    updated_by          VARCHAR(25),
     CONSTRAINT          "Valid_Votes" CHECK ( "vote" IN (-1, 1)),
     CONSTRAINT          "PK_Users_Votes" UNIQUE (user_id, post_id)
 );
